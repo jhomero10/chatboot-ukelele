@@ -1,19 +1,21 @@
-import fs from 'fs'
-import users from './users.json'
+import fs from 'fs' 
 
 /**
  * get list user
  * @returns 
  */
+
+const data = fs.readFileSync('users.json', 'utf8');
+const users = JSON.parse(data);
 const getUserByDoc = async (doc: string): Promise<any> => {
     //const dataCalendarApi = await fetch('https://hook.us1.make.com/vw8g2pkkckoj4f369yq2bga1uiirqphx')
-    const list = users.find(x => x.document === doc)
+    const list = users.find((x:any) => x.document === doc)
     return list
 }
 
 const getUserList = async (): Promise<string> => {
     //const dataCalendarApi = await fetch('https://hook.us1.make.com/vw8g2pkkckoj4f369yq2bga1uiirqphx')
-    const list = users.reduce((prev, current) => {
+    const list = users.reduce((prev:any, current:any) => {
         return prev += [
             `Documento reservado (no disponible): `,
             `${current.document} \n`,

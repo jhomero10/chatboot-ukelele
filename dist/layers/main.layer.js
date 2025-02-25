@@ -1,17 +1,25 @@
-import { BotContext, BotMethods } from "@bot-whatsapp/bot/dist/types"
-import { getHistoryParse } from "../utils/handleHistory"
-import AIClass from "../services/ai"
-import { flowSeller } from "../flows/seller.flow"
-import { flowConfirm } from "../flows/confirm.flow" 
-import { flowScheduleVoley } from "../flows/schedule-voley.flow"
-import { flowScheduleFutbol } from "../flows/schedule-futbol.flow"
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const handleHistory_1 = require("../utils/handleHistory");
+const seller_flow_1 = require("../flows/seller.flow");
+const confirm_flow_1 = require("../flows/confirm.flow");
+const schedule_voley_flow_1 = require("../flows/schedule-voley.flow");
+const schedule_futbol_flow_1 = require("../flows/schedule-futbol.flow");
 /**
  * Determina que flujo va a iniciarse basado en el historial que previo entre el bot y el humano
  */
-export default async (_: BotContext, { state, gotoFlow, extensions }: BotMethods) => {
-    const ai = extensions.ai as AIClass
-    const history = getHistoryParse(state)
+exports.default = (_1, _a) => __awaiter(void 0, [_1, _a], void 0, function* (_, { state, gotoFlow, extensions }) {
+    const ai = extensions.ai;
+    const history = (0, handleHistory_1.getHistoryParse)(state);
     const prompt = `Como una inteligencia artificial avanzada, tu tarea es analizar el contexto de una conversación y determinar cuál de las siguientes acciones es más apropiada para realizar:
     --------------------------------------------------------
     Historial de conversación:
@@ -36,17 +44,21 @@ export default async (_: BotContext, { state, gotoFlow, extensions }: BotMethods
     
 
 
-    Respuesta ideal (RESERVA VOLEY|RESERVA FUTBOL|CONFIRMAR):`
-
-    const text = await ai.createChat([
+    Respuesta ideal (RESERVA VOLEY|RESERVA FUTBOL|CONFIRMAR):`;
+    const text = yield ai.createChat([
         {
             role: 'system',
             content: prompt
         }
-    ])
-    if (text === null) return;
-    if (text.includes('HABLAR')) return gotoFlow(flowSeller)
-    if (text.includes('VOLEY')) return gotoFlow(flowScheduleVoley)
-    if (text.includes('FUTBOL')) return gotoFlow(flowScheduleFutbol)
-    if (text.includes('CONFIRMAR')) return gotoFlow(flowConfirm)
-}
+    ]);
+    if (text === null)
+        return;
+    if (text.includes('HABLAR'))
+        return gotoFlow(seller_flow_1.flowSeller);
+    if (text.includes('VOLEY'))
+        return gotoFlow(schedule_voley_flow_1.flowScheduleVoley);
+    if (text.includes('FUTBOL'))
+        return gotoFlow(schedule_futbol_flow_1.flowScheduleFutbol);
+    if (text.includes('CONFIRMAR'))
+        return gotoFlow(confirm_flow_1.flowConfirm);
+});

@@ -1,11 +1,21 @@
-import { addKeyword, EVENTS } from "@bot-whatsapp/bot";
-import AIClass from "../services/ai";
-import { getHistoryParse, handleHistory } from "../utils/handleHistory";
-import { generateTimer } from "../utils/generateTimer";
-import { getCurrentCalendar } from "../services/calendar";
-import { calendarVoley } from "../utils/constants";
-import { getFullCurrentDate } from "../utils/currentDate";
-
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.flowScheduleVoley = void 0;
+const bot_1 = require("@bot-whatsapp/bot");
+const handleHistory_1 = require("../utils/handleHistory");
+const generateTimer_1 = require("../utils/generateTimer");
+const calendar_1 = require("../services/calendar");
+const constants_1 = require("../utils/constants");
+const currentDate_1 = require("../utils/currentDate");
 const PROMPT_SCHEDULE = `
 Como ingeniero de inteligencia artificial especializado en la programación de reservas de canchas de voley ball playa,
 tu objetivo es analizar la conversación y determinar la intención del cliente de programar una reserva de una cancha de voley ball playa, así como su preferencia de fecha y hora. 
@@ -17,7 +27,7 @@ Fecha de hoy: {CURRENT_DAY}
 
 **Calendarios disponibles**:
 ----------------------------------
-${calendarVoley}
+${constants_1.calendarVoley}
 
 
 
@@ -60,25 +70,21 @@ INSTRUCCIONES:
 14. si la reserva inicia antes de las 5pm o termina después de las 11pm debes decirle al cliente que **NO** es posible agendar en ese horario
 
 -----------------------------
-Respuesta útil en primera persona:`
-
-const generateSchedulePrompt = (summary: string, history: string) => {
-    const nowDate = getFullCurrentDate()
+Respuesta útil en primera persona:`;
+const generateSchedulePrompt = (summary, history) => {
+    const nowDate = (0, currentDate_1.getFullCurrentDate)();
     const mainPrompt = PROMPT_SCHEDULE
         .replace('{AGENDA_ACTUAL}', summary)
         .replace('{HISTORIAL_CONVERSACION}', history)
-        .replace('{CURRENT_DAY}', nowDate)
-
-    return mainPrompt
-}
-
-const flowScheduleVoley = addKeyword(EVENTS.ACTION).addAction(async (ctx, { extensions, state, flowDynamic }) => {
-    const ai = extensions.ai as AIClass
-    const history = getHistoryParse(state)
-    const list = await getCurrentCalendar(1)
-    const promptSchedule = generateSchedulePrompt(list?.length ? list : 'ninguna', history)
-
-    const text = await ai.createChat([
+        .replace('{CURRENT_DAY}', nowDate);
+    return mainPrompt;
+};
+const flowScheduleVoley = (0, bot_1.addKeyword)(bot_1.EVENTS.ACTION).addAction((ctx_1, _a) => __awaiter(void 0, [ctx_1, _a], void 0, function* (ctx, { extensions, state, flowDynamic }) {
+    const ai = extensions.ai;
+    const history = (0, handleHistory_1.getHistoryParse)(state);
+    const list = yield (0, calendar_1.getCurrentCalendar)(1);
+    const promptSchedule = generateSchedulePrompt((list === null || list === void 0 ? void 0 : list.length) ? list : 'ninguna', history);
+    const text = yield ai.createChat([
         {
             role: 'system',
             content: promptSchedule
@@ -87,19 +93,15 @@ const flowScheduleVoley = addKeyword(EVENTS.ACTION).addAction(async (ctx, { exte
             role: 'user',
             content: `Cliente pregunta: ${ctx.body}`
         }
-    ], 'gpt-4')
-    if (text === null) return;
-    const textFinal = text.replace("ha sido programada", "podrá ser programada").replace("Vendedor:", "")
-
-    await handleHistory({ content: textFinal, role: 'assistant' }, state)
-
+    ], 'gpt-4');
+    if (text === null)
+        return;
+    const textFinal = text.replace("ha sido programada", "podrá ser programada").replace("Vendedor:", "");
+    yield (0, handleHistory_1.handleHistory)({ content: textFinal, role: 'assistant' }, state);
     const chunks = textFinal.split(/(?<!\d)\.\s+/g);
-
-    await state.update({ interest: "Reserva voley", idParent: 1 })
+    yield state.update({ interest: "Reserva voley", idParent: 1 });
     for (const chunk of chunks) {
-        await flowDynamic([{ body: chunk.trim(), delay: generateTimer(150, 250) }]);
+        yield flowDynamic([{ body: chunk.trim(), delay: (0, generateTimer_1.generateTimer)(150, 250) }]);
     }
-
-})
-
-export { flowScheduleVoley }
+}));
+exports.flowScheduleVoley = flowScheduleVoley;

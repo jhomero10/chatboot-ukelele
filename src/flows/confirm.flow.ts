@@ -2,8 +2,8 @@ import { addKeyword, EVENTS } from "@bot-whatsapp/bot";
 import AIClass from "../services/ai";
 import { clearHistory, handleHistory, getHistoryParse } from "../utils/handleHistory";
 import { getFullCurrentDate } from "../utils/currentDate";
-import { appToCalendar, getCurrentCalendar } from "src/services/calendar";
-import { calendarVoley, calendarsFutbol, getCalendar } from "src/utils/constants";
+import { getCurrentCalendar, appToCalendar } from "../services/calendar";
+import { calendarVoley, calendarsFutbol, getCalendar } from "../utils/constants";
 
 const opciones: Intl.DateTimeFormatOptions = {
     weekday: 'long',
@@ -79,6 +79,7 @@ const flowConfirm = addKeyword(EVENTS.ACTION).addAction(async (_, { flowDynamic 
             content: generatePromptToFormatDate(history, list?.length ? list : 'ninguna', getCalendar(calendarSelect))
         }
     ], 'gpt-4')
+    if (text === null) return;
     const value = text.replace("fecha:", "").toLowerCase().split("calendario:")
     const parsedText = value[1] === undefined ? text.replace("fecha:", "").toLowerCase().split("idcalendario:") : value;
     const date = parsedText[0]
@@ -129,6 +130,7 @@ const flowConfirm = addKeyword(EVENTS.ACTION).addAction(async (_, { flowDynamic 
                 content: generateJsonParse(infoCustomer)
             }
         ])
+        if (text === null) return;
         try {
             await appToCalendar(text)
             let fecha = new Date(state.get('startDate'));

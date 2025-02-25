@@ -2,7 +2,7 @@ import { addKeyword, EVENTS } from "@bot-whatsapp/bot";
 import { generateTimer } from "../utils/generateTimer";
 import { getHistoryParse, handleHistory } from "../utils/handleHistory";
 import AIClass from "../services/ai";
-import { getFullCurrentDate } from "src/utils/currentDate";
+import { getFullCurrentDate } from "../utils/currentDate";
 
 const PROMPT_SELLER = `
 Eres el asistente virtual en un negocio llamado ukelele pitalito que ofrece servicios de reserva de cancha de futbol y cancha de voley ball playa, ubicada en Neiva, Huila.
@@ -61,7 +61,7 @@ const flowSeller = addKeyword(EVENTS.ACTION).addAction(async (_, { state, flowDy
                 content: prompt
             }
         ])
-
+        if (text === null) return;
         await handleHistory({ content: text, role: 'assistant' }, state)
 
         const chunks = text.split(/(?<!\d)\.\s+/g);
