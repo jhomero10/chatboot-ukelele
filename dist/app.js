@@ -19,11 +19,11 @@ const aws_sdk_1 = __importDefault(require("aws-sdk"));
 const fs_1 = __importDefault(require("fs"));
 const ai_1 = __importDefault(require("./services/ai"));
 const flows_1 = __importDefault(require("./flows"));
-const ai = new ai_1.default(process.env.OPEN_API || "", 'gpt-3.5-turbo-16k');
+const ai = new ai_1.default("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", 'gpt-3.5-turbo-16k');
 const s3 = new aws_sdk_1.default.S3({
-    accessKeyId: process.env.AWS_ACCESS,
-    secretAccessKey: process.env.AWS_SECRET,
-    region: process.env.AWS_REGION,
+    accessKeyId: "AKIAW5WU5D2AXMUM62YH",
+    secretAccessKey: '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',
+    region: 'us-east-1',
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const provider = (0, bot_1.createProvider)(provider_baileys_1.BaileysProvider);
@@ -42,7 +42,7 @@ const uploadQrToS3 = (filePath) => __awaiter(void 0, void 0, void 0, function* (
         try {
             const fileContent = fs_1.default.readFileSync(filePath);
             const params = {
-                Bucket: process.env.S3_BUCKET_NAME || "", // Nombre de tu bucket
+                Bucket: "img-qr", // Nombre de tu bucket
                 Key: `canchas-${filePath}`, // Nombre del archivo en S3
                 Body: fileContent,
                 ACL: "public-read"

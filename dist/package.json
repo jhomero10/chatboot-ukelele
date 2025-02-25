@@ -5,7 +5,7 @@
   "type": "commonjs",
   "scripts": { 
     "build": "echo Construyendo la aplicación... && tsc && npx shx cp -R package.json dist/package.json && npx shx cp -R .env dist/.env",
-   
+   "start": "echo Ejecutando la aplicación... && node -r dotenv/config dist/app.js dotenv_config_path=dist/.env",
     "dev": "npx tsx src/app.ts -r dotenv/config dotenv_config_path=./.env",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
