@@ -2,7 +2,7 @@
   "name": "bot_canchas_master",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "npx tsx src/app.ts -r dotenv/config dotenv_config_path=./.env",
     "test": "echo \"Error: no test specified\" && exit 1"
