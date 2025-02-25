@@ -1,0 +1,22 @@
+[
+    {
+        "document": "1234",
+        "name": "leonardo",
+        "email": "guizaleonardo@gmail.com"
+    },
+    {
+        "document": "456789",
+        "name": "leonardo 1",
+        "email": "guizaleonardo@gmail.com"
+    },
+    {
+        "document": "987654",
+        "name": "leonardo 2",
+        "email": "jhomero10@gmail.com"
+    },
+    {
+        "document": "4321",
+        "name": "leonardo 3",
+        "email": "jhomero10@gmail.com"
+    }
+]
