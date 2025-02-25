@@ -6,11 +6,11 @@ import fs from "fs"
 import AIClass from './services/ai';
 import flows from './flows';
 
-const ai = new AIClass(process.env.OPEN_API || "", 'gpt-3.5-turbo-16k')
+const ai = new AIClass( "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", 'gpt-3.5-turbo-16k')
 const s3: AWS.S3 = new AWS.S3({
-    accessKeyId: process.env.AWS_ACCESS,
-    secretAccessKey: process.env.AWS_SECRET,
-    region: process.env.AWS_REGION,
+    accessKeyId:  "AKIAW5WU5D2AXMUM62YH",
+    secretAccessKey:  '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',
+    region:  'us-east-1',
 })
 const main = async () => {
 
@@ -32,7 +32,7 @@ const uploadQrToS3 = async (filePath: string) => {
             const fileContent = fs.readFileSync(filePath);
 
             const params = {
-                Bucket: process.env.S3_BUCKET_NAME || "", // Nombre de tu bucket
+                Bucket:  "img-qr", // Nombre de tu bucket
                 Key: `canchas-${filePath}`, // Nombre del archivo en S3
                 Body: fileContent,
                 ACL: "public-read"
