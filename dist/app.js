@@ -21,9 +21,9 @@ const ai_1 = __importDefault(require("./services/ai"));
 const flows_1 = __importDefault(require("./flows"));
 const ai = new ai_1.default(process.env.OPEN_API || "", 'gpt-3.5-turbo-16k');
 const s3 = new aws_sdk_1.default.S3({
-    accessKeyId: "AKIAW5WU5D2AXMUM62YH",
-    secretAccessKey: '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',
-    region: 'us-east-1',
+    accessKeyId: process.env.AWS_ACCESS,
+    secretAccessKey: process.env.AWS_SECRET,
+    region: process.env.AWS_REGION,
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const provider = (0, bot_1.createProvider)(provider_baileys_1.BaileysProvider);
