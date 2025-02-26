@@ -8,9 +8,9 @@ import flows from './flows';
 
 const ai = new AIClass(process.env.OPEN_API || "", 'gpt-3.5-turbo-16k')
 const s3: AWS.S3 = new AWS.S3({
-    accessKeyId: "AKIAW5WU5D2AXMUM62YH",
-    secretAccessKey: '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',
-    region: 'us-east-1',
+    accessKeyId: process.env.AWS_ACCESS,
+    secretAccessKey: process.env.AWS_SECRET,
+    region: process.env.AWS_REGION,
 })
 const main = async () => {
 
