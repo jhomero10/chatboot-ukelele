@@ -19,7 +19,7 @@ const aws_sdk_1 = __importDefault(require("aws-sdk"));
 const fs_1 = __importDefault(require("fs"));
 const ai_1 = __importDefault(require("./services/ai"));
 const flows_1 = __importDefault(require("./flows"));
-const ai = new ai_1.default("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", 'gpt-3.5-turbo-16k');
+const ai = new ai_1.default(process.env.OPEN_API || "", 'gpt-3.5-turbo-16k');
 const s3 = new aws_sdk_1.default.S3({
     accessKeyId: "AKIAW5WU5D2AXMUM62YH",
     secretAccessKey: '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',
