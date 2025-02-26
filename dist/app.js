@@ -19,7 +19,7 @@ const aws_sdk_1 = __importDefault(require("aws-sdk"));
 const fs_1 = __importDefault(require("fs"));
 const ai_1 = __importDefault(require("./services/ai"));
 const flows_1 = __importDefault(require("./flows"));
-const ai = new ai_1.default(process.env.OPEN_API || "", 'gpt-3.5-turbo-16k');
+const ai = new ai_1.default(process.env.OPENAI_API_KEY || "", 'gpt-3.5-turbo-16k');
 const s3 = new aws_sdk_1.default.S3({
     accessKeyId: process.env.AWS_ACCESS,
     secretAccessKey: process.env.AWS_SECRET,

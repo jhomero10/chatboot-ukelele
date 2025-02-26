@@ -34,7 +34,9 @@ const generatePromptToFormatDate = (history: string, agendaActual: string, avail
     - Solo puede ser reservadas entre las 5pm y las 11pm en intervalos de minimo 1 hora empezando desde las 5:00 pm y finalizando a las 10:00 pm,de lunes a domingo y solo para los siguientes 30 días
     - En el campo "idCalendar" debes poner el idCalendar que fue seleccionado anteriormente.
     - Debes tener en cuenta que las reservas no pueden pasar de las 11 pm, es decir si se intenta reservar a las 10 pm solo se podrá reservar 1 hora.
-
+    - Siempre se debe responder en el formato de la fecha YYYY/dd/mm hh:mm
+    - Siempre debe devolver el id calendar así calendario:idCalendar
+    - Siempre debe devolver la cantidad de horas de reserva así horas: Cantidad de horas
     `
 
     return prompt
